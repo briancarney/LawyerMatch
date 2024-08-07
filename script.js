@@ -17,11 +17,12 @@ let timer;
 let score = 0;
 
 // Fetch images from CSV
-fetch('assets/famous_lawyers_matching.csv')
+fetch('famous_lawyers_matching.csv')
     .then(response => response.text())
     .then(data => {
         const csvData = data.split('\n').map(row => row.split(',')[0]);
         images = csvData.filter(image => image.trim() !== '');
+        console.log(images); // Log to verify the images array
     })
     .catch(error => console.error('Error loading CSV:', error));
 
