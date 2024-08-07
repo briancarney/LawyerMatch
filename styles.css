@@ -154,5 +154,4 @@ button:hover {
     padding: 5px;
     border-radius: 4px;
     visibility: hidden;
-    transform: rotateY(180deg); /* Counter-rotate to make text readable */
 }

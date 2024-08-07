@@ -73,7 +73,7 @@ function createGameBoard(images) {
             <div class="card-inner">
                 <div class="card-front"></div>
                 <div class="card-back">
-                    <img src="assets/${image}" alt="${image}">
+                    <img src="assets/${image}" alt="${image}" onerror="this.src='assets/placeholder.png'">
                     <div class="card-name">${image.split('.')[0].replace(/_/g, ' ')}</div>
                 </div>
             </div>
