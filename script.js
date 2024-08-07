@@ -53,6 +53,9 @@ function initGame() {
     // Reset timer and start the game
     clearInterval(timer);
     startTimer();
+
+    // Center the game board
+    gameBoard.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function getRandomImages(array, num) {
