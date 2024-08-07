@@ -4,6 +4,7 @@ const messageElement = document.getElementById('message');
 const progressBar = document.querySelector('.progress');
 const timerInput = document.getElementById('timer-length');
 const startGameButton = document.getElementById('start-game');
+const resetGameButton = document.getElementById('reset-game');
 const scoreElement = document.getElementById('score');
 
 let images = [];
@@ -29,6 +30,7 @@ fetch('famous_lawyers_matching.csv')
     .catch(error => console.error('Error loading CSV:', error));
 
 startGameButton.addEventListener('click', initGame);
+resetGameButton.addEventListener('click', resetGame);
 
 function initGame() {
     // Reset variables
@@ -162,10 +164,9 @@ function endGame(win) {
 }
 
 function resetGame() {
-    matches = 0;
-    score = 0;
-    updateScore();
-    messageElement.textContent = '';
+    clearInterval(timer);
+    gameEnded = true;
+    initGame();
 }
 
 function updateScore() {
