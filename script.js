@@ -36,6 +36,10 @@ function initGame() {
     matches = 0;
     score = 0;
     gameEnded = false;
+    lockBoard = false;
+    firstCard = null;
+    secondCard = null;
+    hasFlippedCard = false;
     updateScore();
     messageElement.textContent = '';
 
