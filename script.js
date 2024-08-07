@@ -15,6 +15,7 @@ let matches = 0;
 let timeLeft;
 let timer;
 let score = 0;
+let hoverTimer;
 
 // Fetch images from CSV
 fetch('famous_lawyers_matching.csv')
@@ -61,10 +62,13 @@ function createGameBoard(images) {
             <div class="card-inner">
                 <div class="card-front"></div>
                 <div class="card-back"><img src="assets/${image}" alt="${image}"></div>
+                <div class="card-name">${image.split('.')[0].replace(/_/g, ' ')}</div>
             </div>
         `;
 
         card.addEventListener('click', flipCard);
+        card.addEventListener('mouseover', handleMouseOver);
+        card.addEventListener('mouseout', handleMouseOut);
         gameBoard.appendChild(card);
     });
 }
@@ -148,4 +152,19 @@ function resetGame() {
 
 function updateScore() {
     scoreElement.textContent = `Score: ${score}`;
+}
+
+function handleMouseOver(event) {
+    const card = event.currentTarget;
+    if (card.classList.contains('flipped')) {
+        hoverTimer = setTimeout(() => {
+            card.querySelector('.card-name').style.visibility = 'visible';
+        }, 2000); // 2 seconds
+    }
+}
+
+function handleMouseOut(event) {
+    const card = event.currentTarget;
+    clearTimeout(hoverTimer);
+    card.querySelector('.card-name').style.visibility = 'hidden';
 }
