@@ -61,8 +61,12 @@ function createGameBoard(images) {
         card.innerHTML = `
             <div class="card-inner">
                 <div class="card-front"></div>
-                <div class="card-back"><img src="assets/${image}" alt="${image}"></div>
-                <div class="card-name">${image.split('.')[0].replace(/_/g, ' ')}</div>
+                <div class="card-back">
+                    <div class="img-container">
+                        <img src="assets/${image}" alt="${image}">
+                        <div class="card-name">${image.split('.')[0].replace(/_/g, ' ')}</div>
+                    </div>
+                </div>
             </div>
         `;
 
@@ -156,15 +160,4 @@ function updateScore() {
 
 function handleMouseOver(event) {
     const card = event.currentTarget;
-    if (card.classList.contains('flipped')) {
-        hoverTimer = setTimeout(() => {
-            card.querySelector('.card-name').style.visibility = 'visible';
-        }, 2000); // 2 seconds
-    }
-}
-
-function handleMouseOut(event) {
-    const card = event.currentTarget;
-    clearTimeout(hoverTimer);
-    card.querySelector('.card-name').style.visibility = 'hidden';
-}
+    if (
