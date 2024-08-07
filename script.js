@@ -135,4 +135,59 @@ function disableCards() {
 function unflipCards() {
     lockBoard = true;
     setTimeout(() => {
-        firstCard.classList.remove
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+        resetBoard();
+    }, 1000);
+}
+
+function resetBoard() {
+    [hasFlippedCard, lockBoard] = [false, false];
+    [firstCard, secondCard] = [null, null];
+}
+
+function startTimer() {
+    timerElement.textContent = `Time left: ${timeLeft}s`;
+    progressBar.style.width = '100%';
+    timer = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `Time left: ${timeLeft}s`;
+        progressBar.style.width = `${(timeLeft / parseInt(timerInput.value)) * 100}%`;
+
+        if (timeLeft <= 0) {
+            endGame(false);
+        }
+    }, 1000);
+}
+
+function endGame(win) {
+    clearInterval(timer);
+    gameEnded = true;
+    messageElement.textContent = win ? `Congratulations You Win! Final Score: ${score}` : `Time's Up! You Lose! Final Score: ${score}`;
+    lockBoard = true;
+}
+
+function resetGame() {
+    clearInterval(timer);
+    gameEnded = true;
+    initGame();
+}
+
+function updateScore() {
+    scoreElement.textContent = `Score: ${score}`;
+}
+
+function handleMouseOver(event) {
+    const card = event.currentTarget;
+    if (card.classList.contains('flipped')) {
+        hoverTimer = setTimeout(() => {
+            card.querySelector('.card-name').style.visibility = 'visible';
+        }, 2000); // 2 seconds
+    }
+}
+
+function handleMouseOut(event) {
+    const card = event.currentTarget;
+    clearTimeout(hoverTimer);
+    card.querySelector('.card-name').style.visibility = 'hidden';
+}
