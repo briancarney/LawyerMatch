@@ -16,6 +16,7 @@ let timeLeft;
 let timer;
 let score = 0;
 let hoverTimer;
+let gameEnded = false;
 
 // Fetch images from CSV
 fetch('famous_lawyers_matching.csv')
@@ -30,11 +31,21 @@ fetch('famous_lawyers_matching.csv')
 startGameButton.addEventListener('click', initGame);
 
 function initGame() {
+    // Reset variables
     timeLeft = parseInt(timerInput.value);
+    matches = 0;
+    score = 0;
+    gameEnded = false;
+    updateScore();
+    messageElement.textContent = '';
+
+    // Select images and create game board
     selectedImages = getRandomImages(images, 10);
     const gameImages = shuffle([...selectedImages, ...selectedImages]);
     createGameBoard(gameImages);
-    resetGame();
+
+    // Reset timer and start the game
+    clearInterval(timer);
     startTimer();
 }
 
@@ -62,10 +73,8 @@ function createGameBoard(images) {
             <div class="card-inner">
                 <div class="card-front"></div>
                 <div class="card-back">
-                    <div class="img-container">
-                        <img src="assets/${image}" alt="${image}">
-                        <div class="card-name">${image.split('.')[0].replace(/_/g, ' ')}</div>
-                    </div>
+                    <img src="assets/${image}" alt="${image}">
+                    <div class="card-name">${image.split('.')[0].replace(/_/g, ' ')}</div>
                 </div>
             </div>
         `;
@@ -78,7 +87,7 @@ function createGameBoard(images) {
 }
 
 function flipCard() {
-    if (lockBoard) return;
+    if (lockBoard || gameEnded) return;
     if (this === firstCard) return;
 
     this.classList.add('flipped');
@@ -143,6 +152,7 @@ function startTimer() {
 
 function endGame(win) {
     clearInterval(timer);
+    gameEnded = true;
     messageElement.textContent = win ? `Congratulations You Win! Final Score: ${score}` : `Time's Up! You Lose! Final Score: ${score}`;
     lockBoard = true;
 }
@@ -160,4 +170,15 @@ function updateScore() {
 
 function handleMouseOver(event) {
     const card = event.currentTarget;
-    if (
+    if (card.classList.contains('flipped')) {
+        hoverTimer = setTimeout(() => {
+            card.querySelector('.card-name').style.visibility = 'visible';
+        }, 2000); // 2 seconds
+    }
+}
+
+function handleMouseOut(event) {
+    const card = event.currentTarget;
+    clearTimeout(hoverTimer);
+    card.querySelector('.card-name').style.visibility = 'hidden';
+}
